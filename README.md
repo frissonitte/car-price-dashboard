@@ -1,7 +1,7 @@
-Streamlit harici dosyalar Atalay Durmaz tarafindan hazirlanmistir.
+Streamlit harici dosyalar, [Atalay Durmaz] (https://github.com/Atalaydurmaz) tarafindan hazirlanmistir. [Linkten](https://github.com/Atalaydurmaz/veri-madenciligi-arac-fiyat-tahmini) ulasabilirsiniz.
 
-DEMO= https://youtu.be/YQ1hd2xpB78
-WEBSITE = carprice-dashboard.streamlit.app/
+[DEMO](https://youtu.be/YQ1hd2xpB78) ----------
+[LIVE WEBSITE](carprice-dashboard.streamlit.app)
 
 # Ikinci El Arac Fiyat Tahmini Dashboard Paketi
 
