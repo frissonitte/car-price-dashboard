@@ -8,7 +8,7 @@ Bu dashboard, ikinci el araclar icin model tabanli fiyat tahmini yapmanizi ve ta
 
 Bu yuklemede sadece su dosyalar bulunur:
 
-- `dashboard.py`
+- `streamlit_app.py`
 - `.streamlit/config.toml`
 - `requirements.txt`
 - `outputs/` klasoru altindaki dashboard girdileri (model ve veri dosyalari)
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 ## Calistirma
 
 ```bash
-streamlit run dashboard.py
+streamlit run streamlit_app.py
 ```
 
 ## Dashboard Ozeti
