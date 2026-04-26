@@ -15,6 +15,7 @@ st.markdown("Seçtiğiniz makine öğrenmesi modeliyle araç değer tahmini ve p
 
 @st.cache_resource
 def load_assets():
+    # Model ve islenmis veri buyuk oldugu icin kaynak seviyesinde cache edilir.
     with open("outputs/ml_modeller.pkl", "rb") as f:
         ml = pickle.load(f)
     with open("outputs/islenmis_veri.pkl", "rb") as f:
@@ -24,12 +25,14 @@ def load_assets():
 
 @st.cache_data
 def load_csv(path):
+    # Yardimci CSV dosyalari yoksa dashboard'in kirilmamasi icin bos DataFrame doner.
     if os.path.exists(path):
         return pd.read_csv(path)
     return pd.DataFrame()
 
 
 ml, veri = load_assets()
+# Egitimde kaydedilen artefaktlar tek noktadan okunur.
 modeller = ml["modeller"]
 scaler = veri["scaler_std"]
 le_dict = veri["le_dict"]
@@ -54,6 +57,7 @@ def secenekler(col_name, fallback):
 
 
 def model_gorunur_ad(model_adi):
+    # Dropdown'da model adinin basindaki siralama numarasini gizler.
     parcalar = model_adi.split(". ", 1)
     if len(parcalar) == 2 and parcalar[0].isdigit():
         return parcalar[1]
@@ -61,6 +65,7 @@ def model_gorunur_ad(model_adi):
 
 
 def safe_encode(col_name, value):
+    # Bilinmeyen kategori gelirse hata vermek yerine 0 doner.
     if col_name not in le_dict:
         return 0
     encoder = le_dict[col_name]
@@ -80,6 +85,7 @@ def get_stat_value(name, default):
 
 
 def prepare_model_input(ozellikler):
+    # Modelin egitimde gordugu ozellik sirasina gore tek satirlik girdi olusturulur.
     x_full = np.array([[ozellikler.get(f, 0.0) for f in feat_names_all]], dtype=float)
     x_scaled = scaler.transform(x_full)
     return x_scaled[:, gecerli_idx]
@@ -99,6 +105,7 @@ def durum_etiketi(ilan_fiyati, tahmin, esik=10.0):
 
 
 def nadir_kombinasyon_uyarisi(df, yil, km):
+    # Kullaniciya istatistiksel olarak zayif bolgelerde oldugunu bildirir.
     if yil >= 2022 and km > 150000:
         return "Bu yıl/km kombinasyonu veri setinde nadir olabilir. Tahmini dikkatli yorumlayın."
 
@@ -161,6 +168,7 @@ ilan_fiyati = st.sidebar.number_input(
 )
 
 if "detayli_analiz" not in st.session_state:
+    # Detay modu kapali baslar; kullanici butonla acabilir.
     st.session_state.detayli_analiz = False
 
 if st.sidebar.button("Fiyatı Tahmin Et", type="primary"):
@@ -221,6 +229,7 @@ delta_text = "İlan fiyatı girilmedi"
 delta_color = "off"
 delta_aciklama = "Karşılaştırma için İlan Fiyatı alanını doldurun"
 if ilan_fiyati > 0:
+    # Ilan fiyati verilirse tahminle farkina gore etiketleme yapilir.
     durum, fark_pct = durum_etiketi(float(ilan_fiyati), prediction, esik=10.0)
     abs_fark_pct = abs(fark_pct)
     if durum == "FIRSAT":
@@ -248,6 +257,7 @@ c3.metric("Tahmini Aralık", f"{prediction - band:,.0f} - {prediction + band:,.0
 fiyat_min = float(df_model["Fiyat"].min()) if "Fiyat" in df_model and len(df_model) > 0 else max(0.0, prediction - band)
 fiyat_max = float(df_model["Fiyat"].max()) if "Fiyat" in df_model and len(df_model) > 0 else prediction + band
 if fiyat_max > fiyat_min:
+    # Tahmini, veri setindeki fiyat araliginda goreli konum olarak gosterir.
     progress_orani = int(np.clip((prediction - fiyat_min) / (fiyat_max - fiyat_min) * 100, 0, 100))
     st.progress(progress_orani, text=f"Tahmin konumu: %{progress_orani} (Min: {fiyat_min:,.0f} TL | Max: {fiyat_max:,.0f} TL)")
 
@@ -264,6 +274,7 @@ if st.session_state.detayli_analiz:
     shap_top = None
     shap_hata = None
     try:
+        # SHAP katkilarini tek ornek (anlik tahmin) icin hesapliyoruz.
         explainer = shap.TreeExplainer(aktif_model)
         shap_values = explainer.shap_values(x_model)
         shap_array = np.array(shap_values)
@@ -291,6 +302,7 @@ if st.session_state.detayli_analiz:
         if df_piyasa.empty:
             st.warning("piyasa_analizi.csv bulunamadı. Benzer ilan analizi gösterilemiyor.")
         else:
+            # Basit benzerlik mantigi: ayni marka + yakin yil + yakin km.
             filt = df_piyasa[
                 (df_piyasa["Marka"] == marka)
                 & (df_piyasa["Yil"].between(yil - 1, yil + 1))
