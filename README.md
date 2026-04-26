@@ -1,5 +1,8 @@
 Streamlit harici dosyalar Atalay Durmaz tarafindan hazirlanmistir.
 
+DEMO= https://youtu.be/YQ1hd2xpB78
+WEBSITE = carprice-dashboard.streamlit.app/
+
 # Ikinci El Arac Fiyat Tahmini Dashboard Paketi
 
 Bu dashboard, ikinci el araclar icin model tabanli fiyat tahmini yapmanizi ve tahmini piyasa verileriyle hizlica karsilastirmanizi saglar. Tek ekran uzerinden model secimi, fiyat analizi ve aciklanabilirlik goruntulemesi sunar.
