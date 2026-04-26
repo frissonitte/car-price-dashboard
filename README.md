@@ -1,4 +1,4 @@
-Dashboard ve streamlit config harici dosyalar Atalay Durmaz tarafindan hazirlanmistir.
+Streamlit harici dosyalar Atalay Durmaz tarafindan hazirlanmistir.
 
 # Ikinci El Arac Fiyat Tahmini Dashboard Paketi
 
