@@ -1,4 +1,4 @@
-Streamlit harici dosyalar, [Atalay Durmaz] (https://github.com/Atalaydurmaz) tarafindan hazirlanmistir. [Linkten](https://github.com/Atalaydurmaz/veri-madenciligi-arac-fiyat-tahmini) ulasabilirsiniz.
+Streamlit harici dosyalar, [Atalay Durmaz](https://github.com/Atalaydurmaz) tarafindan hazirlanmistir. [Linkten](https://github.com/Atalaydurmaz/veri-madenciligi-arac-fiyat-tahmini) ulasabilirsiniz.
 
 [DEMO](https://youtu.be/YQ1hd2xpB78) ----------
 [LIVE WEBSITE](carprice-dashboard.streamlit.app)
