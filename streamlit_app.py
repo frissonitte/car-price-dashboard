@@ -8,6 +8,11 @@ import streamlit as st
 import shap
 
 
+def arac_degerlendir(*_args, **_kwargs):
+    # Placeholder for unpickling legacy artifacts that reference __main__.arac_degerlendir.
+    raise RuntimeError("arac_degerlendir is not available in the Streamlit app context.")
+
+
 st.set_page_config(page_title="5. Grup Araç Fiyat Tahmin", layout="wide")
 st.title("İkinci El Araç Fiyat Tahmin Sistemi")
 st.markdown("Seçtiğiniz makine öğrenmesi modeliyle araç değer tahmini ve piyasa kıyaslaması")
@@ -334,7 +339,7 @@ if st.session_state.detayli_analiz:
                     "Durum",
                 ]
                 goster = filt[cols].sort_values("Fark_Pct").head(10).reset_index(drop=True)
-                st.dataframe(goster, use_container_width=True)
+                st.dataframe(goster, width="stretch")
 
     with sag:
         st.markdown("### Segment Dağılımı")
@@ -361,17 +366,17 @@ if st.session_state.detayli_analiz:
 
         if hasattr(aktif_model, "feature_importances_"):
             fi = pd.Series(aktif_model.feature_importances_, index=feat_names_model).sort_values(ascending=False).head(8)
-            st.dataframe(fi.rename("Önem Skoru").to_frame(), use_container_width=True)
+            st.dataframe(fi.rename("Önem Skoru").to_frame(), width="stretch")
 
         st.markdown("### SHAP Açıklaması")
         if shap_top is not None:
             st.caption("Pozitif SHAP değeri fiyatı artırır, negatif SHAP değeri düşürür.")
-            st.dataframe(shap_top[["Ozellik", "SHAP"]], use_container_width=True)
+            st.dataframe(shap_top[["Ozellik", "SHAP"]], width="stretch")
         elif shap_hata:
             st.info("Bu model için SHAP hesaplanamadı. Ağaç tabanlı modellerde daha stabil çalışır.")
 
     with st.expander("Tahminde kullanılan özellikler"):
-        st.dataframe(pd.DataFrame([ozellikler]).T.rename(columns={0: "Değer"}), use_container_width=True)
+        st.dataframe(pd.DataFrame([ozellikler]).T.rename(columns={0: "Değer"}), width="stretch")
 else:
     st.info("Canlı tahmin gösteriliyor. Detaylı analiz için sol panelden Fiyatı Tahmin Et butonuna basın.")
 
@@ -388,4 +393,4 @@ with tab_karsilastirma:
         cols = ["Model", "R2", "RMSE", "MAE", "MAPE", "Sure_sn"]
         tablo = df_model_sonuc[cols].sort_values("R2", ascending=False).copy()
         tablo.insert(0, "Aktif", np.where(tablo["Model"] == aktif_model_adi, "       ✅", ""))
-        st.dataframe(tablo, use_container_width=True)
+        st.dataframe(tablo, width="stretch")
